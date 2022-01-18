@@ -1,0 +1,69 @@
+Menus:
+esc = controls menu
+ctrl + o = options menu
+ctrl + s = save single
+ctrl + alt + s = save many
+
+Buttons:
+g = generate new maze
+p = toggle play mode
+f = toggle fullscreen
+alt + v = toggle adaptive lines
+alt + b = toggle adaptive frame
+n = swap day/night background
+r = reset frame / player
+ctrl + q = quit
+
+Settings:
+ctrl + r = reset all settings
+alt + r = reset colors
+ctrl + m = randomize maze environment
+alt + m = randomize maze colors
+ctrl + p = randomize player settings
+alt + p = randomize player colors
+alt + n = randomize background colors
+alt + t = set color theme
+
+Borders:
+b + plus/minus = resize borders
+b + mouse wheel = resize borders in steps
+b + ] = max border size
+b + [ = min border size
+b + 0 = reset border size
+
+Lines:
+v + plus/minus = expand lines in steps
+v + mouse wheel = expand lines
+v + ] = max line width
+v + [ = min line width
+v + 0 = reset line width
+
+In View Mode:
+a = align maze
+arrow keys = pan maze
+mouse wheel = pan
+shift + mouse wheel = pan
+ctrl + mouse wheel = zoom
+ctrl + plus/minus = zoom
+ctrl + ] = max zoom
+ctrl + [ = min zoom
+ctrl + 0 = reset zoom
+
+1 = jump to quadrant 1
+2 = jump to quadrant 2
+3 = jump to quadrant 3
+4 = jump to quadrant 4
+5 = jump to center
+
+In Play Mode:
+arrow keys = move
+caps lock = switch to alternate speed
+shift = temporarily switch speed
+alt + mouse wheel = resize player
+alt + plus/minus = resize player
+alt + ] = max player size
+alt + [ = min player size
+
+1 - teleport to start
+2 - teleport to finish (if completed)
+0 - teleport random
