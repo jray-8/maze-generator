@@ -35,6 +35,7 @@ try:
 	R_ARROW = pygame.image.load(ROOT + "menu/right_arrow.png")
 	SL_ARROW = pygame.image.load(ROOT + "menu/selected_left_arrow.png")
 	SR_ARROW = pygame.image.load(ROOT + "menu/selected_right_arrow.png")
+	MAZE_ICON = pygame.image.load(ROOT + "resources/maze_icon.ico")
 except Exception as e:
 	print("Could not locate all resources...")
 	print(str(e))
@@ -2803,7 +2804,7 @@ def controls_menu(window, start_page=2):
 # MAIN
 def main():
 	pygame.display.set_caption("Maze Generator")
-	pygame.display.set_icon()
+	pygame.display.set_icon(MAZE_ICON)
 
 	screen_init() # ensure window can fit on screen
 	screen = pygame.display.set_mode(WIN_SIZE)
