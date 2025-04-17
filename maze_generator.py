@@ -35,7 +35,7 @@ try:
 	R_ARROW = pygame.image.load(ROOT + "menu/right_arrow.png")
 	SL_ARROW = pygame.image.load(ROOT + "menu/selected_left_arrow.png")
 	SR_ARROW = pygame.image.load(ROOT + "menu/selected_right_arrow.png")
-	MAZE_ICON = pygame.image.load(ROOT + "resources/maze_icon.ico")
+	MAZE_ICON = pygame.image.load(ROOT + "resources/maze_icon.png")
 except Exception as e:
 	print("Could not locate all resources...")
 	print(str(e))
@@ -1046,7 +1046,7 @@ class Player():
 		self.grow_counter = 0
 		# movement
 		self.dir_priority = 1 # 0 = horizontally, 1 = vertically
-		self.manual_override = False # tap to move instantly
+		self.manual_override = True # tap to move instantly
 		self.ms_1 = Player.DEFAULT_SPEED_1 # movement speed options
 		self.ms_2 = Player.DEFAULT_SPEED_2
 		self.alt_speed = False # using ms 2
