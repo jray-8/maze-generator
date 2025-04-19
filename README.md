@@ -10,7 +10,7 @@ A fun and interactive maze generator built using Pygame. This program allows you
 
 - __Smooth Navigation__: Use arrow keys or mouse to pan and zoom naturally.
 
-- __Interactive Player__: Control a small character to solve the maze and earn a crown.
+- __Interactive Player__: Control a small character to solve the maze and earn your :crown:.
 
 - __Settings Menu__: Adjust maze and player settings – colors, speed, and more.
 
