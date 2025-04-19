@@ -14,6 +14,7 @@ pygame.init()
 #$ current
 
 # GLOBALS
+DEBUG = False
 DEFAULT_WINX = 1200 # static
 DEFAULT_WINY = 900 # static
 AR = DEFAULT_WINX / DEFAULT_WINY
@@ -162,8 +163,8 @@ class Maze():
 		# --- frame ---
 		self.frame_pos = [0,0] # fov [y,x] - cell at topleft of frame
 		self.frame_size = (0,0) # (rows, cols)
-		self.min_frame_length = Maze.MIN_FRAME_SIZE # tiles at largest possible zoom
-		self.max_frame_length = Maze.MAX_FRAME_SIZE # tiles at smallest zoom (may not be able to show full maze)
+		self.min_frame_length = Maze.MIN_FRAME_SIZE # number of tiles at largest possible zoom
+		self.max_frame_length = Maze.MAX_FRAME_SIZE # number of tiles at smallest zoom (may not be able to show full maze)
 		# --- scroll ---
 		self.scroll_delay = int(self.fps / Maze.SCROLL_SPEED * Maze.SCROLL_VAL) # frames / scroll
 		self.scroll_counter = 0
@@ -222,8 +223,8 @@ class Maze():
 		self.width = (self.cols * scale)
 		self.height = (self.rows * scale)
 
-		# Set new tile dimensions to fill the maze window
-		# adjusts window size, frame size, and window pos (position on screen)
+		# Set new tile dimensions to fill the zoomed frame
+		# -- readjusts window size, frame size, and window pos (position on screen)
 		self.update_tilesize()
 
 	def update_pos(self):
@@ -235,16 +236,15 @@ class Maze():
 
 	def update_tilesize(self):
 		# set tilesize to fit the zoomed amount of tiles on screen
-		# Tiles are squares
-		self.tilesize = (self.width / self.cols) # first get size to fit ALL cells on screen
+		# tiles are squares (width = height)
+
 		limiting_side = min(self.width, self.height) # shorter dimension [width/height]
 
 		# min. tile length [width or height] such that a maximum of MAX_SCREEN_TILES can be seen in the window (on the limiting side)
 		current_length = limiting_side / (self.max_screen_tiles)
 
 		# apply lower limit on tile size
-		if self.tilesize < current_length:
-			self.tilesize = current_length
+		self.tilesize = current_length
 
 		# round tilesize and adjust maze window
 		self.tilesize = int(self.tilesize) # truncate to make tile bounds consistent (not offset every x tiles)
@@ -264,17 +264,19 @@ class Maze():
 		frame_height = self.max_screen_tiles
 		frame_width = self.max_screen_tiles
 		if k == 0: # cols are larger
-			frame_width *= ratio
+			frame_width = min(frame_width * ratio, self.cols) # prevent floating-point error
 		else: # rows are larger
-			frame_height *= ratio
+			frame_height = min(frame_height * ratio, self.rows)
 		self.frame_size = (frame_height, frame_width)
 
 		# update window position
 		self.update_pos()
 
-		#print("Frame size:", self.frame_size) #!
-		#print("Window size:", self.width, self.height)
-		#print("Tile length:", self.tilesize)
+		if DEBUG: #!
+			print("Frame size:", self.frame_size)
+			print("Window size:", self.width, self.height)
+			print("Tile length:", self.tilesize)
+			print()
 
 		# set line size based on zoom level
 		self.update_line_size()
@@ -556,7 +558,6 @@ class Maze():
 		col = cell[1]
 		curr_block = self.data[row][col]
 		curr_block.visited = 1
-		#print(self.check_visited()) #! how many cells have been visited
 
 		unvisited_blocks = [] # cells that can be visited
 		neighbours = self.find_neighbours(cell, unvisited_blocks) # positions of unvisited cells
@@ -588,7 +589,8 @@ class Maze():
 			return
 
 	def find_cell(self, cell, n, radius=0, cw=1, dir=[]): # closest block from the cell that has n borders
-		#print('Find a cell with (%d) borders from [%d,%d] - r=%d' % (n, cell[0], cell[1], radius)) #!
+		if DEBUG:
+			print('Find a cell with (%d) borders from [%d,%d] - r=%d' % (n, cell[0], cell[1], radius)) #!
 		# chosen cell
 		center_row = cell[0]
 		center_col = cell[1]
@@ -683,21 +685,24 @@ class Maze():
 			if not set_start:
 				start_pos = pos.copy() # COPY (not linked to the current position)
 				set_start = True
-				#print(pos) #!
-				#print('*****')
+				if DEBUG:
+					print(pos) #! start pos
+					print('*****')
 			# Check if completed ring
 			else:
 				if pos == start_pos: # completed loop
-					#print('Finished cycle %d\n' % radius) #!
+					if DEBUG:
+						print('Finished cycle %d\n' % radius) #!
 					break
-				# debug current pos
-				#print(pos) #!
-				#print('-----') 
+				if DEBUG:
+					print(pos) #! current pos
+					print('-----') 
 
 			# Inspect cell
 			block = self.data[pos[0]][pos[1]]
 			if block.borders() == n:
-				#print('Found Cell!\n') #!
+				if DEBUG:
+					print('Found Cell!\n') #!
 				return block # FOUND CELL
 
 			# Move to the next cell
@@ -845,7 +850,6 @@ class Maze():
 			design.set_colorkey(BLACK)
 			design.fill(color, special_flags=pygame.BLEND_MIN) # keeps lower rgb value (fill or previous)
 			# draw design
-			#pygame.draw.rect(self.surface, RED, design_rect) #! show design surface
 			self.surface.blit(design, design_rect)
 		return 0
 
@@ -926,9 +930,10 @@ class Maze():
 		# tilesize only affects the length of tiles used to render the maze,
 		# the canvas can always be resized.
 		# draw full maze on a new canvas
-		# if self.adaptive_lines: #! more flexibility to use screen's line width (already adapted)
-		# 	line_width = self.get_line_size(max(self.rows, self.cols))
-		line_width = self.line_width # current line width
+		if self.adaptive_lines:
+			line_width = self.get_line_size(max(self.rows, self.cols))
+		else:
+			line_width = self.line_width # current line width
 		# default choices
 		if frame_width == None:
 			frame_width = int(line_width/2) # on either side
@@ -3216,7 +3221,6 @@ def main():
 				active = False # end
 			# MOUSE WHEEL EVENT
 			elif event.type == pygame.MOUSEWHEEL:
-				#print([event.y, event.x]) #! wheel values
 				# ZOOM MAZE -- by 1 row/col
 				if ctrl_held:
 					new_maze.zoom(event.y)
