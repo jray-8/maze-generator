@@ -8,19 +8,21 @@ A fun and interactive maze generator built using Pygame. This program allows you
 
 - __Maze Generation__: Generates random mazes using a Depth-First Search (DFS).
 
+- __Smooth Navigation__: Use arrow keys or mouse to pan and zoom naturally.
+
 - __Interactive Player__: Control a small character to solve the maze and earn a crown.
 
-- __Settings Menu__: Adjust maze and player settings, including colors, speed, and more.
+- __Settings Menu__: Adjust maze and player settings – colors, speed, and more.
 
-- __Help Menu__: Access a list of keybindings and controls in-game by pressing __ESC__.
+- __Help Menu__: Press __ESC__ in-game to view keybindings and controls.
 
-- __Save Mazes__: Save your generated mazes as images to print out and try offline.
+- __Save Mazes__: Export your mazes as images to print or solve offline.
 
-- __Adaptive UI__: Day/night mode, customizable background and borders for a personalized experience.
+- __Adaptive UI__: Day/night mode, customizable background and borders for a personalized look.
 
 
 <div style="text-align: center;">
-	<img src="resources/home.jpg">
+	<img src="resources/home.png">
 </div>
 
 
@@ -45,7 +47,7 @@ A fun and interactive maze generator built using Pygame. This program allows you
 	```
 
 
-	<img src="resources/green_maze.jpg">
+	<img src="resources/blue_maze.png">
 
 ## Basic Controls
 
@@ -72,4 +74,4 @@ A fun and interactive maze generator built using Pygame. This program allows you
 >
 > To change maze settings, press `ctrl + o` and follow the instructions.
 
-<img src="resources/settings.jpg">
+<img src="resources/settings.png">
